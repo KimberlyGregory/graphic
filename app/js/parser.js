@@ -44,8 +44,13 @@ Entry.prototype.getMeasurement = function (){
 
 };
 
+Entry.prototype.parseSubject = function(){
+	// reading, coding, running/exercising, tech/dev learnings, language learning
+};
+
 Entry.prototype.convertToMinutes = function (){
 // 1 page = 1.75 minutes
+// 1 mile = 9.5 minutes + 15 minutes stretching for each entry
 };
 
 Entry.prototype.makeAdjustment = function (){
