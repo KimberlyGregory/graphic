@@ -5,10 +5,12 @@
 **/
 
 var _           = require('underscore');
-var moment      = require('moment');
-var fs          = require('fs');
-var file        = __dirname + '/reporter-export.json';
-var destFile    = __dirname + '/database.json';
+    moment      = require('moment'),
+    fs          = require('fs'),
+    file        = __dirname + '/reporter-export.json',
+    destFile    = __dirname + '/database.json',
+    express     = require('express'),
+    app         = express();
 
 var subjectRegexes = {
     readingRegex:           new RegExp(/(reading|read)/),
@@ -145,5 +147,9 @@ function parseData(data){
         } else {
           console.log("JSON saved to " + destFile);
         }
+    });
+
+    var server = app.listen(3000, function() {
+        console.log('Listening on port %d', server.address().port);
     });
 }();
