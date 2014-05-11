@@ -149,6 +149,18 @@ function parseData(data){
         }
     });
 
+    app.configure(function() {
+        app.use(express.static(__dirname+'/pubic'));
+    });
+
+    app.get('/', function(req, res){
+        res.sendfile(__dirname + '/public/index.html');
+    });
+
+    app.get('/public/script.js', function(req, res){
+        res.sendfile(__dirname + '/public/script.js');
+    });
+
     var server = app.listen(3000, function() {
         console.log('Listening on port %d', server.address().port);
     });
