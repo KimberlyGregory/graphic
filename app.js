@@ -4,10 +4,11 @@
     - Underscore
 **/
 
-var _       = require('underscore');
-var moment  = require('moment');
-var fs = require('fs');
-var file = __dirname + '/reporter-export.json';
+var _           = require('underscore');
+var moment      = require('moment');
+var fs          = require('fs');
+var file        = __dirname + '/reporter-export.json';
+var destFile    = __dirname + '/database.json';
 
 var subjectRegexes = {
     readingRegex:           new RegExp(/(reading|read)/),
@@ -137,4 +138,12 @@ function parseData(data){
     data = JSON.parse(data);
     var snapshots = cleanData(data);
     data = parseData(snapshots);
+
+    fs.writeFile(destFile, JSON.stringify(data, null, " "), function(err) {
+        if(err) {
+          console.log(err);
+        } else {
+          console.log("JSON saved to " + destFile);
+        }
+    });
 }();
