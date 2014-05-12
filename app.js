@@ -128,6 +128,23 @@ function parseData(data){
     return entries;
 };
 
+function globalizeData(data){
+    var subjects = _.map(data, function(entry){
+        return entry.subject;
+    });
+
+    subjects = _.unique(subjects);
+    return {
+        entries: data,
+        stats: {
+            subjects: subjects,
+            startDate: data[0].cleanDate,
+            endDate:    data[date.length - 1].cleanDate,
+            entryCount: data.length
+        }
+    }
+};
+
 
 !function init(){
     var data = fs.readFileSync(file, 'utf8', function (err, data) {
@@ -140,8 +157,9 @@ function parseData(data){
     data = JSON.parse(data);
     var snapshots = cleanData(data);
     data = parseData(snapshots);
+    json = globalizeData(data);
 
-    fs.writeFile(destFile, JSON.stringify(data, null, " "), function(err) {
+    fs.writeFile(destFile, JSON.stringify(json, null, " "), function(err) {
         if(err) {
           console.log(err);
         } else {
@@ -159,6 +177,10 @@ function parseData(data){
 
     app.get('/public/script.js', function(req, res){
         res.sendfile(__dirname + '/public/script.js');
+    });
+
+    app.get('/database.json', function(req, res){
+        res.sendfile(__dirname + '/database.json');
     });
 
     var server = app.listen(3000, function() {
