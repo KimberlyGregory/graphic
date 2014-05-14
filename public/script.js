@@ -9,9 +9,6 @@ Graphic = (function ($, d3, undefined) {
 		var width = 1000,
     		barHeight = 20;
 		
-    		console.log(data);
-
-
     	var x = d3.scale.linear()
     			.domain([0, d3.max(data, function(d) { return d.valueInMinutes; })])
     			.range([0,width]);
@@ -44,15 +41,8 @@ Graphic = (function ($, d3, undefined) {
 			categories = json.stats.subjects;
 			drawGraph(entries);
 		});
-
-		
 	};
 
 	init();
-
-	return {
-		init: init
-	};
-
 
 })(window.jQuery, window.d3);
