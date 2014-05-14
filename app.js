@@ -139,7 +139,7 @@ function globalizeData(data){
         stats: {
             subjects: subjects,
             startDate: data[0].cleanDate,
-            endDate:    data[date.length - 1].cleanDate,
+            endDate:    data[data.length - 1].cleanDate,
             entryCount: data.length
         }
     }

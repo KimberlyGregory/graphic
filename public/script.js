@@ -1,10 +1,23 @@
-var Graphic = !function (d3, undefined) {
+var Graphic;
+
+Graphic = (function ($, d3, undefined) {
+	var entries 	= [],
+		categories 	= [], // Coding, reading, exercising
 
 
-	var entries = [];
-	var categories = []; // Coding, reading, exercising
+	init = function(){
+		$.getJSON('/database.json', function(json){
+			entries = json.entries;
+			categories = json.stats.subjects;
+
+		});
+	};
+
+	init();
+
+	return {
+		init: init
+	};
 
 
-	
-
-}(window.d3);
+})(window.jQuery, window.d3);
