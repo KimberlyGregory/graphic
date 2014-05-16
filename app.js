@@ -115,6 +115,21 @@ function cleanData(data){
     return snapshots;
 };
 
+function groupByDate(data, numDays){
+    var groupedDates = {};
+    numDays = numDays || 30;
+    var dates = _.range(0, numDays);
+    _.each(dates, function(num){ groupedDates[moment().subtract('days', num).format("MMM Do YYYY")] = undefined; });
+    var groupedData = _.groupBy(data, 'cleanDate');
+
+    groupedDates = _.defaults(groupedDates, groupedData);
+
+    _.each(groupedDates, function(value, key, list){ 
+        if ( _.isUndefined(value) ) { groupedDates[key] = "No entries"; }
+    });
+    return groupedDates;
+}
+
 function parseData(data){
     var entries = [];
     _.each(data, function(x, index) {
@@ -135,6 +150,7 @@ function globalizeData(data){
 
     subjects = _.unique(subjects);
     return {
+        groupedByDay: groupByDate(data),
         entries: data,
         stats: {
             subjects: subjects,
