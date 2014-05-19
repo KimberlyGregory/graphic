@@ -79,7 +79,7 @@ Entry.prototype.makeAdjustment = function (){
         date = moment(this.rawDate).subtract('days', 1);
     }
 
-    this.cleanDate = moment(date).format("MMM Do YYYY");
+    this.cleanDate = moment(date).format("dd M/D");
 };
 
 // Assumes regex key ends in Regex
@@ -118,8 +118,8 @@ function cleanData(data){
 function groupByDate(data, numDays){
     var groupedDates = {};
     numDays = numDays || 30;
-    var dates = _.range(0, numDays);
-    _.each(dates, function(num){ groupedDates[moment().subtract('days', num).format("MMM Do YYYY")] = undefined; });
+    var dates = _.range(numDays, 0);
+    _.each(dates, function(num){ groupedDates[moment().subtract('days', num).format("dd M/D")] = undefined; });
     var groupedData = _.groupBy(data, 'cleanDate');
 
     groupedDates = _.defaults(groupedDates, groupedData);
@@ -127,7 +127,8 @@ function groupByDate(data, numDays){
     _.each(groupedDates, function(value, key, list){ 
         if ( _.isUndefined(value) ) { groupedDates[key] = "No entries"; }
     });
-    return groupedDates;
+
+    return _.pairs(groupedDates);
 }
 
 function parseData(data){
