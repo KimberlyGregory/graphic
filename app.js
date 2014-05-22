@@ -29,6 +29,16 @@ var labelRegexes = {
 
 var yesterdayRegex =        new RegExp(/yesterday/);
 
+var dayOrder = {
+    'Sunday': 0,
+    'Monday': 1,
+    'Tuesday': 2,
+    'Wednesday': 3,
+    'Thursday': 4,
+    'Friday': 5,
+    'Saturday': 6
+}
+
 
 function Entry (data){
     this.rawText = data.text.trim().toLowerCase();
@@ -105,6 +115,10 @@ _.pairsObj = function(obj, key1, key2) {
     return pairs;
 };
 
+_.sum = function(list, iterator){
+    return _.reduce(list, function(memo, num){ return memo + num[iterator]; }, 0);
+}
+
 
 function cleanData(data){
     var snapshots = data.snapshots;
@@ -143,6 +157,20 @@ function groupByDate(data, numDays){
     });
 
     return _.pairsObj(groupedDates, "date", "data");
+};
+
+function groupByDayOfTheWeek (data){
+    var grouped = _.groupBy(data, function(entry){return moment(entry.cleanDate).format('dddd'); })
+    var mapped = _.map(grouped, function(day, dayName){
+        return {
+            day: dayName,
+            minutes: _.sum(day, 'valueInMinutes')
+        };
+    });
+
+    return _.sortBy(mapped, function(day){
+        return dayOrder[day.day];
+    });
 }
 
 function parseData(data){
@@ -166,10 +194,12 @@ function globalizeData(data){
     subjects = _.unique(subjects);
     return {
         groupedByDay: groupByDate(data),
+        groupByDayOfTheWeek: groupByDayOfTheWeek(data),
         groupByActivity: _.countBy(data, 'subject'),
         entries: data,
         stats: {
             subjects: subjects,
+            totalTime: _.sum(data, 'valueInMinutes'),
             startDate: data[0].cleanDate,
             endDate:    data[data.length - 1].cleanDate,
             entryCount: data.length

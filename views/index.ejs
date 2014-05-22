@@ -20,11 +20,13 @@
 	</li>
 	<li>
 		<h4>Average Time Spent per Day:</h4>
-		<p>100 minutes</p>
+		<p><%= Math.ceil(json.stats.totalTime / 30) + " Minutes" %> </p>
 	</li>
 	<li>
 		<h4>Most Productive Day of the Week:</h4>
-		<p>Wednesday</p>
+		<% json.groupByDayOfTheWeek.forEach(function(el, index){ %>
+			<li><%= el.day + ": " + el.minutes + " minutes" %></li>
+		<% }) %>
 	</li>
 </ul>
 
