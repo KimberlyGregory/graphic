@@ -10,7 +10,7 @@ Graphic = (function ($, d3, undefined) {
     		barHeight = 20;
 		
     	var x = d3.scale.linear()
-    			.domain([0, d3.max(data, function(d) { return d[1][0].valueInMinutes; })])
+    			.domain([0, d3.max(data, function(d) { return d.data[0].valueInMinutes; })])
     			.range([0,width]);
 
     	var chart = d3.select("#bar-chart")
@@ -24,7 +24,7 @@ Graphic = (function ($, d3, undefined) {
 
 
     	bar.append("rect")
-    	    .attr("width", function(d){ return  x(d[1][0].valueInMinutes); })
+    	    .attr("width", function(d){ return  x(d.data[0].valueInMinutes); })
     	    .attr("height", barHeight - 1)
     	    .style({fill: '#aaa'});
 
@@ -32,11 +32,12 @@ Graphic = (function ($, d3, undefined) {
     	      .attr("x", 5)
     	      .attr("y", barHeight / 2)
     	      .attr("dy", ".35em")
-    	      .text(function(d) { console.log(d); return d[1][0].valueInMinutes + " min on "  + d[0]; });
+    	      .text(function(d) { return d.data[0].valueInMinutes + " min on "  + d.date; });
 	},
 
 	init = function(){
 		$.getJSON('/database.json', function(json){
+			
 			entries = json.groupedByDay;
 			categories = json.stats.subjects;
 			drawGraph(entries);

@@ -1,0 +1,36 @@
+<h1>Graphic</h1>
+<h2>To Do List</h2>
+<ul>
+	<li>Reorganize json</li>
+	<li>Stack bars based on subject</li>
+	<li>Global Contrib chart, what have I done each day</li>
+	<li>Ability to filter the contribution chart above to a certain activity</li>
+	<li>Quick facts - most frequent activity, least, time spent (per day), most productive by day of the week</li>
+</ul>
+
+<h2>Quick Facts</h2>
+<ul>
+	<li>
+		<h4>Most Frequent Activity:</h4>
+		<ol>
+		<% for(index in json.groupByActivity) { %> 
+			<li><%= index + ": " + json.groupByActivity[index] %></li>
+		<% } %>
+		</ol>
+	</li>
+	<li>
+		<h4>Average Time Spent per Day:</h4>
+		<p>100 minutes</p>
+	</li>
+	<li>
+		<h4>Most Productive Day of the Week:</h4>
+		<p>Wednesday</p>
+	</li>
+</ul>
+
+<svg id="bar-chart"></svg>
+
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="http://d3js.org/d3.v3.min.js"></script>
+<script id="dataScript" src="/database.json" type="application/json"></script>
+<script src='/public/script.js'></script>

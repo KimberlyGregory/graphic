@@ -91,6 +91,20 @@ function checkRegexes(list, entry){
     return result.slice(0, -5);
 };
 
+_.pairsObj = function(obj, key1, key2) {
+    var keys    = _.keys(obj);
+    var length  = keys.length;
+    var pairs   = new Array(length);
+    var base     = {};
+    for (var i = 0; i < length; i++) {
+       base[key1] = keys[i];
+       base[key2] = obj[keys[i]];
+       pairs[i]   = base;
+       base     = {};
+    }
+    return pairs;
+};
+
 
 function cleanData(data){
     var snapshots = data.snapshots;
@@ -128,7 +142,7 @@ function groupByDate(data, numDays){
         if ( _.isUndefined(value) ) { groupedDates[key] = "No entries"; }
     });
 
-    return _.pairs(groupedDates);
+    return _.pairsObj(groupedDates, "date", "data");
 }
 
 function parseData(data){
@@ -152,6 +166,7 @@ function globalizeData(data){
     subjects = _.unique(subjects);
     return {
         groupedByDay: groupByDate(data),
+        groupByActivity: _.countBy(data, 'subject'),
         entries: data,
         stats: {
             subjects: subjects,
@@ -184,12 +199,14 @@ function globalizeData(data){
         }
     });
 
+    app.set('view engine', 'ejs');
+
     app.configure(function() {
         app.use(express.static(__dirname+'/pubic'));
     });
 
     app.get('/', function(req, res){
-        res.sendfile(__dirname + '/public/index.html');
+        res.render('index', json)
     });
 
     app.get('/public/script.js', function(req, res){
