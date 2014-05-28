@@ -5,7 +5,6 @@
 	<li>Stack bars based on subject</li>
 	<li>Global Contrib chart, what have I done each day</li>
 	<li>Ability to filter the contribution chart above to a certain activity</li>
-	<li>Divide day breakdown by number of times that day is in the data</li>
 	<li>Can clean up the data processing code quite a bit</li>
 </ul>
 
@@ -14,7 +13,7 @@
 	<li>
 		<h4>Most Frequent Activity:</h4>
 		<ol>
-		<% for(index in json.groupByActivity) { %> 
+		<% for(index in json.groupByActivity) { %>
 			<li><%= index + ": " + json.groupByActivity[index] %></li>
 		<% } %>
 		</ol>

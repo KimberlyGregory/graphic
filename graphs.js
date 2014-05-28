@@ -1,4 +1,5 @@
 var Graphic = (function($, d3, undefined){
+  "use strict";
 
   var days = ['day1', 'day2', 'day3'],
 

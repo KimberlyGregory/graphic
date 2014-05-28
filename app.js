@@ -146,16 +146,15 @@ function cleanData(data){
 function groupByDate(data, numDays){
     var groupedDates = {};
     numDays = numDays || 30;
-    var dates = _.range(numDays, 0);
+    var dates = _.range(0, 30).reverse();
     _.each(dates, function(num){ groupedDates[moment().subtract('days', num).format("dd M/D")] = undefined; });
     var groupedData = _.groupBy(data, 'cleanDate');
 
-    groupedDates = _.defaults(groupedDates, groupedData);
-
-    _.each(groupedDates, function(value, key, list){ 
-        if ( _.isUndefined(value) ) { groupedDates[key] = "No entries"; }
+    _.each(groupedDates, function(value, key, list){
+      groupedDates[key] = groupedData[key];
+      if ( _.isUndefined(groupedData[key]) ) { groupedDates[key] = "No entries"; }
     });
-
+    
     return _.pairsObj(groupedDates, "date", "data");
 };
 
