@@ -152,9 +152,9 @@ function groupByDate(data, numDays){
 
     _.each(groupedDates, function(value, key, list){
       groupedDates[key] = groupedData[key];
-      if ( _.isUndefined(groupedData[key]) ) { groupedDates[key] = "No entries"; }
+      if ( _.isUndefined(groupedData[key]) ) { groupedDates[key] = []; }
     });
-    
+
     return _.pairsObj(groupedDates, "date", "data");
 };
 

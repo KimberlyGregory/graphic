@@ -10,7 +10,10 @@ Graphic = (function ($, d3, undefined) {
     		barHeight = 20;
 
     	var x = d3.scale.linear()
-    			.domain([0, d3.max(data, function(d) { return d.data[0].valueInMinutes; })])
+    			.domain([0, d3.max(data, function(d) {
+						if (d.data === 'No entries'){ return 0; }
+						return d3.sum(d.data.map(function(e){ return e.valueInMinutes; }));
+					})])
     			.range([0,width]);
 
     	var chart = d3.select("#bar-chart")
@@ -22,18 +25,25 @@ Graphic = (function ($, d3, undefined) {
     	  .enter().append("g")
     	    .attr("transform", function(d, i) { return "translate(0," + i * barHeight + ")"; });
 
+			bar.selectAll("rect")
+      	.data(function(d) { return d.data; })
+    	.enter().append("rect")
+				.attr('width', function(d){ console.log(d); return d.valueInMinutes; })
+				.attr('height', barHeight - 1)
+				.style('fill', function(d, index){ console.log(index); return '#'+ index +'aa'; });
 
-    	bar.append("rect")
-    	    .attr("width", function(d){ return  x(d.data[0].valueInMinutes || 0); })
-    	    .attr("height", barHeight - 1)
-    	    .style({fill: '#aaa'});
-
-    	bar.append("text")
+			bar.append("text")
     	      .attr("x", 5)
     	      .attr("y", barHeight / 2)
     	      .attr("dy", ".35em")
     	      .text(function(d) {
-							return (d.data[0].valueInMinutes || 0) + " min on "  + d.date;
+							var time;
+							if (d.data === 'No entries'){
+								time = 0;
+							} else {
+									time = d3.sum(d.data.map(function(e){ return e.valueInMinutes; }));
+							}
+							return time + " min on "  + d.date;
 						});
 	},
 
