@@ -16,6 +16,9 @@ Graphic = (function ($, d3, undefined) {
 					})])
     			.range([0,width]);
 
+			var color = d3.scale.ordinal()
+			    .range(["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00"]);
+
     	var chart = d3.select("#bar-chart")
     	    .attr("width", width)
     	    .attr("height", barHeight * data.length);
@@ -24,13 +27,23 @@ Graphic = (function ($, d3, undefined) {
     	    .data(data)
     	  .enter().append("g")
     	    .attr("transform", function(d, i) { return "translate(0," + i * barHeight + ")"; });
-
+			var barStart = 0;
 			bar.selectAll("rect")
       	.data(function(d) { return d.data; })
     	.enter().append("rect")
-				.attr('width', function(d){ console.log(d); return d.valueInMinutes; })
+				.attr('x', function(d, index){
+					if (index === 0) { barStart = 0;}
+					d.start = barStart;
+					// console.log(d.start, barStart);
+					return d.start;
+				})
+				.attr('width', function(d, index, anything, uh){
+					console.log(anything);
+					d.start = d.valueInMinutes;
+					return d.valueInMinutes;
+				})
 				.attr('height', barHeight - 1)
-				.style('fill', function(d, index){ console.log(index); return '#'+ index +'aa'; });
+				.style('fill', function(d, index){ return color(index); });
 
 			bar.append("text")
     	      .attr("x", 5)
