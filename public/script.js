@@ -6,7 +6,7 @@ Graphic = (function ($, d3, undefined) {
 
 
 	drawGraph = function(data){
-		var width = 900,
+		var width = 1000,
     		barHeight = 20;
 
     	var x = d3.scale.linear()
@@ -14,7 +14,7 @@ Graphic = (function ($, d3, undefined) {
 						if (d.data === 'No entries'){ return 0; }
 						return d3.sum(d.data.map(function(e){ return e.valueInMinutes; }));
 					})])
-    			.range([0,width - 150]);
+    			.range([0,width - 300]);
 
 		var color = d3.scale.ordinal()
 			.domain(categories)
@@ -39,30 +39,34 @@ Graphic = (function ($, d3, undefined) {
     	    .data(data)
     	  .enter().append("g")
     	    .attr("transform", function(d, i) { return "translate(0," + i * barHeight + ")"; });
-			var barStart = 0;
+
 			bar.selectAll("rect")
       	.data(function(d) { return d.data; })
     	.enter().append("rect")
-				.attr('x', function(d){ return x(d.xVal - d.valueInMinutes); })
-				.attr('width', function(d){
-					return x(d.valueInMinutes);
-				})
+				.attr('x', function(d){ return 60 + x(d.xVal - d.valueInMinutes); })
+				.attr('width', function(d){ return x(d.valueInMinutes); })
 				.attr('height', barHeight - 1)
-				.style('fill', function(d, index){ return color(d.subject); });
+				.style('fill', function(d, index){ return color(d.subject); })
 
 			bar.append("text")
-    	      .attr("x", 5)
+    	      .attr("x", 0)
     	      .attr("y", barHeight / 2)
     	      .attr("dy", ".35em")
-    	      .text(function(d) {
-							var time;
-							if (d.data === 'No entries'){
-								time = 0;
-							} else {
-									time = d3.sum(d.data.map(function(e){ return e.valueInMinutes; }));
-							}
-							return time + " min on "  + d.date;
-						});
+    	      .text(function(d) { return d.date; });
+
+		bar.append("text")
+					.attr("x", 800)
+					.attr("y", barHeight / 2)
+					.attr("dy", ".35em")
+					.text(function(d) {
+						var time;
+						if (d.data === 'No entries'){
+							time = 0;
+						} else {
+								time = d3.sum(d.data.map(function(e){ return e.valueInMinutes; }));
+						}
+						return time + " min";
+					});
 
     	var legend = chart.selectAll(".legend")
     	      .data(color.domain().slice().reverse())

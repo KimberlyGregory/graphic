@@ -145,8 +145,8 @@ function cleanData(data){
 
 function groupByDate(data, numDays){
     var groupedDates = {};
-    numDays = numDays || 30;
-    var dates = _.range(0, 30).reverse();
+    numDays = numDays || 28;
+    var dates = _.range(0, numDays).reverse();
     _.each(dates, function(num){ groupedDates[moment().subtract('days', num).format("dd M/D")] = undefined; });
     var groupedData = _.groupBy(data, 'cleanDate');
 
