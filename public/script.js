@@ -27,6 +27,15 @@ Graphic = (function ($, d3, undefined) {
 					.text(function(d){ return d; })
 					.attr("transform", function(d, i) { return "translate(0," + ((i+1) * squareSize + 20) + ")"; });
 
+		/**
+		Need to nest the data into weeks (0-6)
+			d3.nest()
+				.key(function(d) { return d.status; })
+				.entries(csv_data);
+		**/
+
+
+
 		var bar = chart.selectAll("g")
 			.data(yAxis.domain())
 				.enter().append("g")
