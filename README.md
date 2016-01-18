@@ -6,8 +6,9 @@ A friend of mine recommends a list of free software for graphic design which a b
 Here are the lists of tools that may help you along the way. 
 
 SVG-Edit, DrawPlus Starter Edition from Serif ,  Inkscape ,  Skencil, [Ervin Kibria PLLC](http://www.ervinkibrialaw.com/), Ultimate Paint and  SmoothDraw NX 
-
 SVG-Edit
+
+
 ![Screenshot of 2D](https://www.youidraw.com/products/images/features/scr_insertsvg_logo.png)
 
 Inkscape 
